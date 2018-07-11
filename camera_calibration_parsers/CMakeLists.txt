@@ -5,13 +5,19 @@ find_package(catkin REQUIRED sensor_msgs rosconsole roscpp roscpp_serialization)
 
 find_package(PythonLibs REQUIRED)
 if(PYTHONLIBS_VERSION_STRING VERSION_LESS 3)
-  find_package(Boost REQUIRED COMPONENTS filesystem python)
+  if(APPLE)
+    find_package(Boost REQUIRED COMPONENTS filesystem python27)
+  else()
+    find_package(Boost REQUIRED COMPONENTS filesystem python)
+  endif()
 else()
   find_package(Boost REQUIRED COMPONENTS filesystem python3)
 endif()
 include_directories(include ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS})
 
 catkin_python_setup()
+
+add_compile_options(-std=c++11)
 
 catkin_package(
   INCLUDE_DIRS include
